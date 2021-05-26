@@ -30,15 +30,16 @@ public class UserController {
 		return userService.getUser(id);
 	}
 
-	@PostMapping()
+	@PostMapping("/register")
 	@ResponseBody
-	public String addNewUser(@RequestParam String username, @RequestParam String password) {
+	public String register(@RequestParam String username, @RequestParam String password) {
 		userService.saveUser(username, password);
-		return "Saved";
+		return "User Succesfulyl registered";
 	}
 
 	@DeleteMapping()
-	public String delete() {
+	public String delete(@RequestParam Long id) {
+		userService.deleteUser(id);
 		return "Delete!";
 	}
 }

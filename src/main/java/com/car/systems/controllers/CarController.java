@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +22,7 @@ public class CarController {
 	@Autowired
 	private CarService carService;
 
-	@GetMapping()
+	@GetMapping("/list")
 	@ResponseBody
 	public Iterable<Car> getAllCars() {
 		return carService.getAllCars();
@@ -29,13 +30,14 @@ public class CarController {
 
 	@PostMapping()
 	@ResponseBody
-	public String addNewUser(@RequestParam String name) {
-		carService.saveCar(name);
+	public String addNewCar(@RequestBody Car car) {
+		carService.saveCar(car);
 		return "Saved";
 	}
 
 	@DeleteMapping()
-	public String delete() {
-		return "Delete!";
+	public String delete(@RequestParam Long carId) {
+		carService.deleteCar(carId);
+		return "Deleted";
 	}
 }

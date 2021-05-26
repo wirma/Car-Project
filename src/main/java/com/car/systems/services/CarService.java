@@ -14,10 +14,12 @@ public class CarService {
 	@Autowired
 	private CarRepository carRepository;
 
-	public void saveCar(String name) {
-		Car user = new Car();
-		user.setName(name);
-		carRepository.save(user);
+	public void saveCar(Car car) {
+		carRepository.save(car);
+	}
+	
+	public void deleteCar(Long carId) {
+		carRepository.deleteById(carId);
 	}
 
 	public Iterable<Car> getAllCars() {
