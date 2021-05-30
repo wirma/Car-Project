@@ -1,6 +1,8 @@
 package com.car.systems.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,28 +20,26 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@GetMapping("/list")
-	@ResponseBody
-	public Iterable<User> getAllUsers() {
-		return userService.getAllUsers();
-	}
-
 	@GetMapping()
 	@ResponseBody
-	public User getUser(@RequestParam Long id) {
-		return userService.getUser(id);
+	public ResponseEntity<User> getUser(@RequestParam Long id) {
+		return new ResponseEntity<User>(userService.getUser(id),HttpStatus.CREATED);
 	}
 
 	@PostMapping("/register")
 	@ResponseBody
-	public String register(@RequestParam String username, @RequestParam String password) {
-		userService.saveUser(username, password);
-		return "User Succesfulyl registered";
+	public ResponseEntity<String> register(@RequestParam String username, @RequestParam String password) {
+		try {
+			userService.register(username, password);
+		}catch(Exception e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<String>("User Succesfulyl registered",HttpStatus.CREATED);
 	}
 
 	@DeleteMapping()
-	public String delete(@RequestParam Long id) {
+	public ResponseEntity<String> delete(@RequestParam Long id) {
 		userService.deleteUser(id);
-		return "Delete!";
+		return new ResponseEntity<String>("User Deleted!",HttpStatus.CREATED);
 	}
 }

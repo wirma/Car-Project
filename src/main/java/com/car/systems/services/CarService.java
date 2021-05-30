@@ -1,5 +1,6 @@
 package com.car.systems.services;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class CarService {
 	public void saveCar(Car car) {
 		carRepository.save(car);
 	}
-	
+
 	public void deleteCar(Long carId) {
 		carRepository.deleteById(carId);
 	}
@@ -33,5 +34,12 @@ public class CarService {
 		} else {
 			return null;
 		}
+	}
+
+	public Iterable<Car> compareCars(Long carId1, Long carId2) {
+		ArrayList<Long> idList = new ArrayList<Long>();
+		idList.add(carId1);
+		idList.add(carId2);
+		return carRepository.findAllById(idList);
 	}
 }

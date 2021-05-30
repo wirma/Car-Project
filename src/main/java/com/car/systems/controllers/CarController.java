@@ -1,6 +1,8 @@
 package com.car.systems.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.car.systems.models.Car;
-import com.car.systems.models.User;
-import com.car.systems.repositories.UserRepository;
 import com.car.systems.services.CarService;
 
 @Controller()
@@ -24,20 +24,26 @@ public class CarController {
 
 	@GetMapping("/list")
 	@ResponseBody
-	public Iterable<Car> getAllCars() {
-		return carService.getAllCars();
+	public ResponseEntity<Iterable<Car>> getAllCars() {
+		return new ResponseEntity<Iterable<Car>>(carService.getAllCars(),HttpStatus.OK);
 	}
 
 	@PostMapping()
 	@ResponseBody
-	public String addNewCar(@RequestBody Car car) {
+	public ResponseEntity<String> addNewCar(@RequestBody Car car) {
 		carService.saveCar(car);
-		return "Saved";
+		return new ResponseEntity<String>("Saved",HttpStatus.CREATED);
 	}
 
 	@DeleteMapping()
-	public String delete(@RequestParam Long carId) {
+	public ResponseEntity<String> delete(@RequestParam Long carId) {
 		carService.deleteCar(carId);
-		return "Deleted";
+		return new ResponseEntity<String>("Deleted car",HttpStatus.OK);
+	}
+	
+	@GetMapping("/compare")
+	@ResponseBody
+	public ResponseEntity<Iterable<Car>> compareCars(@RequestParam Long carId1,@RequestParam Long carId2) {
+		return new ResponseEntity<Iterable<Car>>(carService.compareCars(carId1,carId2),HttpStatus.OK);
 	}
 }
