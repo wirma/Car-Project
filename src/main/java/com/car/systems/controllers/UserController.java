@@ -25,6 +25,19 @@ public class UserController {
 	public ResponseEntity<User> getUser(@RequestParam Long id) {
 		return new ResponseEntity<User>(userService.getUser(id),HttpStatus.CREATED);
 	}
+	
+	@GetMapping("/login")
+	@ResponseBody
+	public ResponseEntity<?> loginUser(@RequestParam String username, @RequestParam String password) {
+		User user;
+		try {
+			user = userService.login(username, password);
+		}catch(Exception e) {
+			return new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return new ResponseEntity<User>(user,HttpStatus.CREATED);
+	}
 
 	@PostMapping("/register")
 	@ResponseBody

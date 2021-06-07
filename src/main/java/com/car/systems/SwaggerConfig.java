@@ -25,7 +25,7 @@ public class SwaggerConfig {
 	}
 
 	private Predicate<String> postPaths() {
-		return or(regex("/car/*"), regex("/user/*"));
+		return or(regex("/car/*"), regex("/user/*"),regex("/car/list"),regex("/car/compare"), regex("/user/register"),regex("/user/login"));
 	}
 
 	private ApiInfo apiInfo() {
